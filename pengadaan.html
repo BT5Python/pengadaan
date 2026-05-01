@@ -34,6 +34,37 @@ footer{margin-top:16px;display:flex;justify-content:space-between;align-items:ce
 @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
 #progressBarContainer{width:100%;background:rgba(255,255,255,0.05);height:10px;border-radius:20px;overflow:hidden;margin-top:14px;display:none}
 #progressBar{height:100%;width:0%;background:#00ff00;transition:0.3s}
+.code-private {
+  color: #ff0000; !important;
+  font-weight: bold;
+  animation: blinkFast 0.5s infinite;
+  -webkit-animation: blinkFast 0.5s infinite;
+}
+
+@keyframes blinkFast {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+  @-webkit-keyframes blinkFast {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+  .bottom-right {
+  position: fixed;
+  right: 100px;
+  bottom: 110px;
+  color: #00ff00;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  animation: blinkFast 0.8s infinite;
+  text-shadow: 0 0 5px red;
+  opacity: 0.9;
+  z-index: 9999; /* 🔥 INI YANG KURANG */
+}
+  body {
+  position: relative;
+}
 </style>
 </head>
 <body>
@@ -46,11 +77,13 @@ footer{margin-top:16px;display:flex;justify-content:space-between;align-items:ce
     </div>
 
     <header>
-      <div class="logo"><b>UP</b></div>
+      <div class="logo"><b style="color:#ffff00;">ISU</b></div>
       <div>
-        <h2 style="color:#00ff00; margin:4px 0 0 0; font-weight:600;">INTEGRATION SYSTEM UPLOAD</h2>
+        <h2 style="color:#00ff00; margin:4px 0 0 0; font-weight:600;">INTEGRATED SISTEM UPLOAD</h2>
         <h1>PENGADAAN PUSLAT KODIKLATAU</h1>        
-        <p class="small">code : PRIVATE</p>
+        <p style="font-size:12px;color:#ffff00">
+        DATE/TIME : <span class="code-private" id="tanggal"></span>
+        </p>
       </div>
    </header>
 
@@ -208,7 +241,30 @@ function heartbeat(){
 
 setInterval(heartbeat, 2000);
 </script>
+  <script>
+function tampilkanTanggal() {
+  const now = new Date();
 
+  const hari = String(now.getDate()).padStart(2, '0');
+  const bulan = String(now.getMonth() + 1).padStart(2, '0');
+  const tahun = now.getFullYear();
+
+  const jam = String(now.getHours()).padStart(2, '0');
+  const menit = String(now.getMinutes()).padStart(2, '0');
+  const detik = String(now.getSeconds()).padStart(2, '0');
+
+  const format = `${hari}-${bulan}-${tahun} ${jam}:${menit}:${detik}`;
+
+  document.getElementById("tanggal").textContent = format;
+}
+
+// update tiap detik biar live
+setInterval(tampilkanTanggal, 1000);
+tampilkanTanggal();
+</script>
+   <div class="bottom-right">
+  evolution is my revolution
+</div>
 </body>
 </html>
 
