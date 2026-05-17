@@ -33,7 +33,7 @@ footer{margin-top:16px;display:flex;justify-content:space-between;align-items:ce
 .running-text span{display:inline-block;padding-left:100%;color:#ff3333;font-weight:700;animation:marquee 12s linear infinite;letter-spacing:1px}
 @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
 #progressBarContainer{width:100%;background:rgba(255,255,255,0.05);height:10px;border-radius:20px;overflow:hidden;margin-top:14px;display:none}
-#progressBar{height:100%;width:0%;background:#00ff00;transition:0.3s}
+#progressBar{height:100%;width:0%;background:#00ff00;transition:0.3s}  
 .code-private {
   color: #ff0000; !important;
   font-weight: bold;
@@ -79,7 +79,7 @@ footer{margin-top:16px;display:flex;justify-content:space-between;align-items:ce
     <header>
       <div class="logo"><b style="color:#ffff00;">ISU</b></div>
       <div>
-        <h2 style="color:#00ff00; margin:4px 0 0 0; font-weight:600;">INTEGRATED SISTEM UPLOAD</h2>
+        <h2 style="color:#00ff00; margin:4px 0 0 0; font-weight:600;">INTEGRATED SYSTEM UPLOAD</h2>
         <h1>PENGADAAN PUSLAT KODIKLATAU</h1>        
         <p style="font-size:12px;color:#ffff00">
         DATE/TIME : <span class="code-private" id="tanggal"></span>
@@ -127,7 +127,7 @@ footer{margin-top:16px;display:flex;justify-content:space-between;align-items:ce
 </div>
 
 <script>
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbz_TrGhIBUrdy4SjDey2RMMb9f0gqtG3baDoH821f9MOxYoKHNnT-hL5B-4eADV7gL7/exec"; // ganti
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzl7AhbTKDMMZjcO_xrktmPQsRU6-PjObd0YzAoOFrDT3uOhAhWpyqnn0qF_xYHd61hdQ/exec"; // ganti
 
 let files = [];
 const drop = document.getElementById("drop");
@@ -164,6 +164,17 @@ drop.addEventListener("drop", e=>{ [...e.dataTransfer.files].forEach(f=>files.pu
 function toBase64(file){ return new Promise((resolve,reject)=>{ const reader=new FileReader(); reader.readAsDataURL(file); reader.onload=()=>resolve(reader.result); reader.onerror=err=>reject(err); }); }
 
 uploadBtn.addEventListener("click", async ()=>{
+  // INPUT FOLDER TUJUAN
+  const folderTujuan = prompt(
+    "Masukkan folder tujuan:\n\nContoh:\nBIDLATKL/BIDLATMATRA/BIDLATUM/DISOPSLAT/DISLOG/DISPERS/PROGAR"
+  );
+  // batal
+  if(folderTujuan === null) return;
+  // kosong
+  if(folderTujuan.trim() === ""){
+    alert("Folder tujuan kosong!");
+    return;
+  }
   if(files.length===0){ alert("Belum ada file."); return; }
   barContainer.style.display="block";
   for(let i=0;i<files.length;i++){
@@ -173,6 +184,8 @@ uploadBtn.addEventListener("click", async ()=>{
     form.append("name",file.name);
     form.append("type",file.type);
     form.append("file",base64.split(',')[1]);
+    // SUBFOLDER TUJUAN
+    form.append("folder", folderTujuan);    
     try{
       const res=await fetch(WEBAPP_URL,{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:form});
       const result=await res.json();
@@ -262,11 +275,12 @@ function tampilkanTanggal() {
 setInterval(tampilkanTanggal, 1000);
 tampilkanTanggal();
 </script>
-   <div class="bottom-right">
-  evolution is my revolution
-</div>
 </body>
 </html>
+
+
+
+
 
 
 
